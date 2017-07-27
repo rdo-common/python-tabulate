@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.7.5
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -95,6 +95,9 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.5-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
