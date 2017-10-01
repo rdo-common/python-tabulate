@@ -64,7 +64,7 @@ The main use cases of the library are:
 Python 3 version.
 
 %prep
-%autosetup -n astanin-%{name}-3830da89c6c1
+%autosetup -n astanin-%{name}-5996cc02275f
 
 %build
 %py2_build
