@@ -1,8 +1,8 @@
 %global modname tabulate
 
 Name:           python-%{modname}
-Version:        0.7.5
-Release:        7%{?dist}
+Version:        0.8.0
+Release:        1%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -24,14 +24,11 @@ The main use cases of the library are:
 %package -n python2-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python2-%{modname}}
-BuildRequires:  python2-devel python2-setuptools
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
 # Test deps
 BuildRequires:  python2-nose
-%if 0%{?fedora} > 23
 BuildRequires:  python2-numpy
-%else
-BuildRequires:  numpy
-%endif
 
 %description -n python2-%{modname}
 The main use cases of the library are:
@@ -48,7 +45,8 @@ Python 2 version.
 %package -n python3-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{modname}}
-BuildRequires:  python3-devel python3-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 # Test deps
 BuildRequires:  python3-nose
 BuildRequires:  python3-numpy
@@ -95,6 +93,9 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Sun Oct 01 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.0-1
+- Update to 0.8.0
+
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
