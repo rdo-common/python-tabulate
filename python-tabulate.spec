@@ -1,7 +1,7 @@
 %global modname tabulate
 
 Name:           python-%{modname}
-Version:        0.8.0
+Version:        0.8.1
 Release:        1%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
@@ -64,7 +64,7 @@ The main use cases of the library are:
 Python 3 version.
 
 %prep
-%autosetup -n astanin-%{name}-5996cc02275f
+%autosetup -n astanin-%{name}-421379831ae0
 
 %build
 %py2_build
@@ -93,6 +93,9 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Tue Oct 03 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.1-1
+- Update to 0.8.1
+
 * Sun Oct 01 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.0-1
 - Update to 0.8.0
 
