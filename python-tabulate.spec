@@ -29,6 +29,10 @@ BuildRequires:  python2-setuptools
 # Test deps
 BuildRequires:  python2-nose
 BuildRequires:  python2-numpy
+BuildRequires:  python2-pandas
+BuildRequires:  python2-wcwidth
+# widechars support
+Recommends:     python2-wcwidth
 
 %description -n python2-%{modname}
 The main use cases of the library are:
@@ -50,6 +54,10 @@ BuildRequires:  python3-setuptools
 # Test deps
 BuildRequires:  python3-nose
 BuildRequires:  python3-numpy
+BuildRequires:  python3-pandas
+BuildRequires:  python3-wcwidth
+# widechars support
+Recommends:     python3-wcwidth
 
 %description -n python3-%{modname}
 The main use cases of the library are:
@@ -95,6 +103,7 @@ Python 3 version.
 %changelog
 * Tue Oct 03 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.1-1
 - Update to 0.8.1
+- Run more tests
 
 * Sun Oct 01 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.0-1
 - Update to 0.8.0
