@@ -1,13 +1,13 @@
 %global modname tabulate
 
 Name:           python-%{modname}
-Version:        0.8.1
+Version:        0.8.2
 Release:        1%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
 URL:            https://pypi.python.org/pypi/tabulate
-Source0:        https://bitbucket.org/astanin/%{name}/get/v%{version}.tar.gz#/%{modname}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/t/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -72,7 +72,7 @@ The main use cases of the library are:
 Python 3 version.
 
 %prep
-%autosetup -n astanin-%{name}-421379831ae0
+%autosetup -n %{modname}-%{version}
 
 %build
 %py2_build
@@ -101,6 +101,9 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Tue Jan 09 2018 Steve Traylen <steve.traylen@cern.ch> - 0.8.2-1
+- Update to 0.8.2, Correct source URL.
+
 * Tue Oct 03 2017 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.1-1
 - Update to 0.8.1
 - Run more tests
