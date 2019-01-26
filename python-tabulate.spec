@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -83,7 +83,11 @@ Python 3 version.
 %py3_install
 
 %check
+# The test uses python, not python2 or 3, so we tweak it before running each.
+sed -i 's/"python"/"python2"/g' test/test_cli.py
 %{__python2} setup.py test
+
+sed -i 's/"python2"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
 
 %files -n python2-%{modname}
@@ -101,6 +105,9 @@ Python 3 version.
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Sat Jan 26 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.3-2
+- Fix FTBFS
+
 * Sat Jan 26 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.3-1
 - Update to latest upstream release
 
