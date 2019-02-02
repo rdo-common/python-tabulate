@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -68,6 +68,9 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sat Jan 26 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.3-3
 - Remove py2 subpackage
 
