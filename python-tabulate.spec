@@ -1,28 +1,18 @@
 %global modname tabulate
 
 Name:           python-%{modname}
-<<<<<<< HEAD
-Version:        0.7.7
-Release:        1%{?dist}
-=======
 Version:        0.8.3
-Release:        4%{?dist}
->>>>>>> master
+Release:        6%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
 URL:            https://pypi.python.org/pypi/tabulate
-<<<<<<< HEAD
-Source0:        https://pypi.python.org/packages/1c/a1/3367581782ce79b727954f7aa5d29e6a439dc2490a9ac0e7ea0a7115435d/tabulate-0.7.7.tar.gz
-=======
 Source0:        https://files.pythonhosted.org/packages/source/t/%{modname}/%{modname}-%{version}.tar.gz
->>>>>>> master
 
 BuildArch:      noarch
 
 %description
 The main use cases of the library are:
-
 * printing small tables without hassle: just one function call, formatting is
   guided by the data itself
 * authoring tabular data for lightweight plain-text markup: multiple output
@@ -30,7 +20,7 @@ The main use cases of the library are:
 * readable presentation of mixed textual and numeric data: smart column
   alignment, configurable number formatting, alignment by a decimal point
 
-<<<<<<< HEAD
+%if 0%{?rhel}
 %package -n python2-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python2-%{modname}}
@@ -38,70 +28,70 @@ BuildRequires:  python2-devel python-setuptools
 BuildRequires:  numpy
 
 %description -n python2-%{modname}
-=======
-%package -n python3-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{modname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-# Test deps
-BuildRequires:  python3-nose
-BuildRequires:  python3-numpy
-BuildRequires:  python3-pandas
-BuildRequires:  python3-wcwidth
-# widechars support
-Recommends:     python3-wcwidth
-
-%description -n python3-%{modname}
->>>>>>> master
 The main use cases of the library are:
+* printing small tables without hassle: just one function call, formatting is
+  guided by the data itself
+* authoring tabular data for lightweight plain-text markup: multiple output
+  formats suitable for further editing or transformation
+* readable presentation of mixed textual and numeric data: smart column
+  alignment, configurable number formatting, alignment by a decimal point%endif
+This package builds for Python 2 version.
+%endif
 
+%package -n python%{python3_pkgversion}-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{modname}}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+# Test deps
+BuildRequires:  python%{python3_pkgversion}-nose
+BuildRequires:  python%{python3_pkgversion}-numpy
+%if 0%{?fedora}
+BuildRequires:  python%{python3_pkgversion}-pandas
+%endif
+BuildRequires:  python%{python3_pkgversion}-wcwidth
+# widechars support
+%if 0%{?fedora}
+Recommends:     python%{python3_pkgversion}-wcwidth
+%endif
+
+%description -n python%{python3_pkgversion}-%{modname}
+The main use cases of the library are:
 * printing small tables without hassle: just one function call, formatting is
   guided by the data itself
 * authoring tabular data for lightweight plain-text markup: multiple output
   formats suitable for further editing or transformation
 * readable presentation of mixed textual and numeric data: smart column
   alignment, configurable number formatting, alignment by a decimal point
+This package builds for Python %{python3_version} version.
 
-<<<<<<< HEAD
-Python 2 version.
-
-%prep
-%setup -q -n tabulate-%{version}
-
-%build
-%{__python2} setup.py build
-
-%install
-%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
-
-%files -n python2-%{modname}
-%license LICENSE
-%doc README.rst
-%{python2_sitelib}/%{modname}*.egg-info/
-%{python2_sitelib}/%{modname}.py*
-%{_bindir}/tabulate
-
-%changelog
-* Tue May 23 2017 Steve Traylen <steve.traylen@cern.ch> - 0.7.7-1
-- New version 0.7.7 , first epel7 release.
-=======
-Python 3 version.
 
 %prep
-%autosetup -n %{modname}-%{version}
+%autosetup -n tabulate-%{version}
 
 %build
+%py2_build
 %py3_build
 
 %install
+%py2_install
 %py3_install
 
 %check
 sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
 
-%files -n python3-%{modname}
+
+%if 0%{?rhel}
+%files -n python2-%{modname}
+%license LICENSE
+%doc README.rst
+%{python2_sitelib}/%{modname}*.egg-info/
+%{python2_sitelib}/%{modname}.py*
+%{_bindir}/tabulate
+%endif
+
+%files -n python%{python3_pkgversion}-%{modname}
 %license LICENSE
 %doc README.rst
 %{_bindir}/%{modname}
@@ -109,7 +99,11 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
+
 %changelog
+* Thu Feb 21 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-6
+- fix merge conflicts
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
@@ -143,7 +137,6 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.5-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
->>>>>>> master
 
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
