@@ -46,12 +46,11 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 # Test deps
 BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-numpy
-%if 0%{?fedora}
-BuildRequires:  python%{python3_pkgversion}-pandas
-%endif
 BuildRequires:  python%{python3_pkgversion}-wcwidth
-# widechars support
 %if 0%{?fedora}
+# FIXME python34-pandas is missing
+BuildRequires:  python%{python3_pkgversion}-pandas
+# widechars support
 Recommends:     python%{python3_pkgversion}-wcwidth
 %endif
 
