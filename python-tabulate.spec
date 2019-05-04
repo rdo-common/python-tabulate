@@ -1,26 +1,34 @@
+%if 0%{?rhel}
+# build for python2 in epel for compatibility reasons
+%global with_python2 1
+%endif
+
 %global modname tabulate
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
-URL:            https://pypi.python.org/pypi/tabulate
+URL:            https://pypi.python.org/pypi/%{modname}
 Source0:        https://files.pythonhosted.org/packages/source/t/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:      noarch
 
-%description
-The main use cases of the library are:
-* printing small tables without hassle: just one function call, formatting is
-  guided by the data itself
-* authoring tabular data for lightweight plain-text markup: multiple output
-  formats suitable for further editing or transformation
-* readable presentation of mixed textual and numeric data: smart column
+%global _description \
+The main use cases of the library are:\
+* printing small tables without hassle: just one function call, formatting is\
+  guided by the data itself\
+* authoring tabular data for lightweight plain-text markup: multiple output\
+  formats suitable for further editing or transformation\
+* readable presentation of mixed textual and numeric data: smart column\
   alignment, configurable number formatting, alignment by a decimal point
 
-%if 0%{?rhel}
+%description
+%_description
+
+%if 0%{?with_python2}
 %package -n python2-%{modname}
 Summary:        %{summary}
 %{?python_provide:%python_provide python2-%{modname}}
@@ -28,13 +36,7 @@ BuildRequires:  python2-devel python-setuptools
 BuildRequires:  numpy
 
 %description -n python2-%{modname}
-The main use cases of the library are:
-* printing small tables without hassle: just one function call, formatting is
-  guided by the data itself
-* authoring tabular data for lightweight plain-text markup: multiple output
-  formats suitable for further editing or transformation
-* readable presentation of mixed textual and numeric data: smart column
-  alignment, configurable number formatting, alignment by a decimal point%endif
+%_description
 This package builds for Python 2 version.
 %endif
 
@@ -47,47 +49,56 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-numpy
 BuildRequires:  python%{python3_pkgversion}-wcwidth
-%if 0%{?fedora}
-# FIXME python34-pandas is missing
+%if !0%{?rhel}
+# FIXME epel: missing dependencies
 BuildRequires:  python%{python3_pkgversion}-pandas
 # widechars support
 Recommends:     python%{python3_pkgversion}-wcwidth
 %endif
 
 %description -n python%{python3_pkgversion}-%{modname}
-The main use cases of the library are:
-* printing small tables without hassle: just one function call, formatting is
-  guided by the data itself
-* authoring tabular data for lightweight plain-text markup: multiple output
-  formats suitable for further editing or transformation
-* readable presentation of mixed textual and numeric data: smart column
-  alignment, configurable number formatting, alignment by a decimal point
+%_description
 This package builds for Python %{python3_version} version.
+
+%if 0%{?python3_other_pkgversion}
+%package -n python%{python3_other_pkgversion}-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python%{python3_other_pkgversion}-%{modname}}
+BuildRequires:  python%{python3_other_pkgversion}-devel
+BuildRequires:  python%{python3_other_pkgversion}-setuptools
+
+%description -n python%{python3_other_pkgversion}-%{modname}
+%_description
+This package builds for Python %{python3_other_pkgversion} version.
+%endif
 
 
 %prep
-%autosetup -n tabulate-%{version}
+%autosetup -n %{modname}-%{version}
 
 %build
-%py2_build
+%{?with_python2: %py2_build}
 %py3_build
+%{?python3_other_pkgversion: %py3_other_build}
 
 %install
-%py2_install
+%{?with_python2: %py2_install}
 %py3_install
+%{?python3_other_pkgversion: %py3_other_install}
 
 %check
 sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
+# FIXME python3_other_pkgversion: add missing dependencies to successfully run tests
 
 
-%if 0%{?rhel}
+%if 0%{?with_python2}
 %files -n python2-%{modname}
 %license LICENSE
 %doc README.rst
 %{python2_sitelib}/%{modname}*.egg-info/
 %{python2_sitelib}/%{modname}.py*
-%{_bindir}/tabulate
+%{_bindir}/%{modname}
 %endif
 
 %files -n python%{python3_pkgversion}-%{modname}
@@ -98,8 +109,22 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
+%if 0%{?python3_other_pkgversion}
+%files -n python%{python3_other_pkgversion}-%{modname}
+%license LICENSE
+%doc README.rst
+%{_bindir}/%{modname}
+%{python3_other_sitelib}/%{modname}*.egg-info/
+%{python3_other_sitelib}/%{modname}.py
+%{python3_other_sitelib}/__pycache__/%{modname}.*
+%endif
+
 
 %changelog
+* Sat May 04 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-7
+- epel: (re-)add properly subpackages for python2 and both python3 versions
+- use macro for description
+
 * Thu Feb 21 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-6
 - fix merge conflicts
 
