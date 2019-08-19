@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -68,6 +68,9 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-6
+- Rebuilt for Python 3.8
+
 * Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
