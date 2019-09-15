@@ -7,7 +7,7 @@
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -77,14 +77,18 @@ This package builds for Python %{python3_other_pkgversion} version.
 %autosetup -n %{modname}-%{version}
 
 %build
+# mind the build chain of the unversioned executables
 %{?with_python2: %py2_build}
-%py3_build
 %{?python3_other_pkgversion: %py3_other_build}
+%py3_build
 
 %install
 %{?with_python2: %py2_install}
-%py3_install
 %{?python3_other_pkgversion: %py3_other_install}
+# make sure the executables are owned by py3
+rm -fv %{buildroot}%{_bindir}/*
+%py3_install
+
 
 %check
 sed -i 's/"python"/"python3"/g' test/test_cli.py
@@ -98,29 +102,34 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %doc README.rst
 %{python2_sitelib}/%{modname}*.egg-info/
 %{python2_sitelib}/%{modname}.py*
-%{_bindir}/%{modname}
+# exclude unversioned binary to not confuse dependency check
+%exclude %{_bindir}/%{modname}
 %endif
-
-%files -n python%{python3_pkgversion}-%{modname}
-%license LICENSE
-%doc README.rst
-%{_bindir}/%{modname}
-%{python3_sitelib}/%{modname}*.egg-info/
-%{python3_sitelib}/%{modname}.py
-%{python3_sitelib}/__pycache__/%{modname}.*
 
 %if 0%{?python3_other_pkgversion}
 %files -n python%{python3_other_pkgversion}-%{modname}
 %license LICENSE
 %doc README.rst
-%{_bindir}/%{modname}
 %{python3_other_sitelib}/%{modname}*.egg-info/
 %{python3_other_sitelib}/%{modname}.py
 %{python3_other_sitelib}/__pycache__/%{modname}.*
+# exclude unversioned binary to not confuse dependency check
+%exclude %{_bindir}/%{modname}
 %endif
+
+%files -n python%{python3_pkgversion}-%{modname}
+%license LICENSE
+%doc README.rst
+%{python3_sitelib}/%{modname}*.egg-info/
+%{python3_sitelib}/%{modname}.py
+%{python3_sitelib}/__pycache__/%{modname}.*
+%{_bindir}/%{modname}
 
 
 %changelog
+* Sun Sep 15 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-8
+- make sure the executables are owned by py3, rhbz#1750911
+
 * Sat May 04 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-7
 - epel: (re-)add properly subpackages for python2 and both python3 versions
 - use macro for description
