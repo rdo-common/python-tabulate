@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.8.3
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -68,6 +68,9 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-7
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-6
 - Rebuilt for Python 3.8
 
