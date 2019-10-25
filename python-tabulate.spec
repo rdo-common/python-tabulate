@@ -1,8 +1,8 @@
 %global modname tabulate
 
 Name:           python-%{modname}
-Version:        0.8.3
-Release:        7%{?dist}
+Version:        0.8.5
+Release:        1%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -61,13 +61,16 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 %files -n python3-%{modname}
 %license LICENSE
-%doc README.rst
+%doc README README.md
 %{_bindir}/%{modname}
 %{python3_sitelib}/%{modname}*.egg-info/
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
 
 %changelog
+* Fri Oct 25 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.5-1
+- Update to 0.8.5
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-7
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
