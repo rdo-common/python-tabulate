@@ -1,4 +1,4 @@
-%if 0%{?rhel}
+%if 0%{?rhel} && %{rhel} <= 7
 # build for python2 in epel for compatibility reasons
 %global with_python2 1
 %endif
