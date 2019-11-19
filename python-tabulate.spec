@@ -109,7 +109,7 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %if 0%{?python3_other_pkgversion}
 %files -n python%{python3_other_pkgversion}-%{modname}
 %license LICENSE
-%doc README.rst
+%doc README*
 %{python3_other_sitelib}/%{modname}*.egg-info/
 %{python3_other_sitelib}/%{modname}.py
 %{python3_other_sitelib}/__pycache__/%{modname}.*
@@ -119,7 +119,8 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 %files -n python%{python3_pkgversion}-%{modname}
 %license LICENSE
-%doc README.rst
+%doc README*
+%{_bindir}/%{modname}
 %{python3_sitelib}/%{modname}*.egg-info/
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
@@ -127,8 +128,14 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 
 %changelog
+* Fri Oct 25 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.5-1
+- Update to 0.8.5
+
 * Sun Sep 15 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-8
 - make sure the executables are owned by py3, rhbz#1750911
+
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-7
+- Rebuilt for Python 3.8.0rc1 (#1748018)
 
 * Sat May 04 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-7
 - epel: (re-)add properly subpackages for python2 and both python3 versions
@@ -136,6 +143,12 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 * Thu Feb 21 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-6
 - fix merge conflicts
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-6
+- Rebuilt for Python 3.8
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.8.3-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
