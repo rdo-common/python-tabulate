@@ -1,13 +1,8 @@
-%if 0%{?rhel} && %{rhel} <= 7
-# build for python2 in epel for compatibility reasons
-%global with_python2 1
-%endif
-
 %global modname tabulate
 
 Name:           python-%{modname}
-Version:        0.8.3
-Release:        8%{?dist}
+Version:        0.8.5
+Release:        2%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
@@ -28,17 +23,6 @@ The main use cases of the library are:\
 %description
 %_description
 
-%if 0%{?with_python2}
-%package -n python2-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{modname}}
-BuildRequires:  python2-devel python-setuptools
-BuildRequires:  numpy
-
-%description -n python2-%{modname}
-%_description
-This package builds for Python 2 version.
-%endif
 
 %package -n python%{python3_pkgversion}-%{modname}
 Summary:        %{summary}
@@ -78,12 +62,10 @@ This package builds for Python %{python3_other_pkgversion} version.
 
 %build
 # mind the build chain of the unversioned executables
-%{?with_python2: %py2_build}
 %{?python3_other_pkgversion: %py3_other_build}
 %py3_build
 
 %install
-%{?with_python2: %py2_install}
 %{?python3_other_pkgversion: %py3_other_install}
 # make sure the executables are owned by py3
 rm -fv %{buildroot}%{_bindir}/*
@@ -95,16 +77,6 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
 # FIXME python3_other_pkgversion: add missing dependencies to successfully run tests
 
-
-%if 0%{?with_python2}
-%files -n python2-%{modname}
-%license LICENSE
-%doc README.rst
-%{python2_sitelib}/%{modname}*.egg-info/
-%{python2_sitelib}/%{modname}.py*
-# exclude unversioned binary to not confuse dependency check
-%exclude %{_bindir}/%{modname}
-%endif
 
 %if 0%{?python3_other_pkgversion}
 %files -n python%{python3_other_pkgversion}-%{modname}
@@ -128,21 +100,14 @@ sed -i 's/"python"/"python3"/g' test/test_cli.py
 
 
 %changelog
+* Tue Nov 19 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.5-2
+- bump release, simplify to merge from epel and drop python2 again
+
 * Fri Oct 25 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.5-1
 - Update to 0.8.5
 
-* Sun Sep 15 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-8
-- make sure the executables are owned by py3, rhbz#1750911
-
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-7
 - Rebuilt for Python 3.8.0rc1 (#1748018)
-
-* Sat May 04 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-7
-- epel: (re-)add properly subpackages for python2 and both python3 versions
-- use macro for description
-
-* Thu Feb 21 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.3-6
-- fix merge conflicts
 
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.8.3-6
 - Rebuilt for Python 3.8
