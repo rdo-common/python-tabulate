@@ -1,6 +1,6 @@
-%global modname tabulate
+%global srcname tabulate
 
-Name:           python-%{modname}
+Name:           python-%{srcname}
 Version:        0.8.5
 Release:        2%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
@@ -23,9 +23,9 @@ The main use cases of the library are:
 
 %description %{_description}
 
-%package -n python3-%{modname}
+%package -n python3-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{modname}}
+%{?python_provide:%python_provide python3-%{srcname}}
 BuildRequires:  python3-devel
 BuildRequires:  python3dist(setuptools)
 # Test deps
@@ -36,12 +36,12 @@ BuildRequires:  python3dist(wcwidth)
 # widechars support
 Recommends:     python%{python3_version}dist(wcwidth)
 
-%description -n python3-%{modname} %{_description}
+%description -n python3-%{srcname} %{_description}
 
 Python 3 version.
 
 %prep
-%autosetup -n %{modname}-%{version}
+%autosetup -n %{srcname}-%{version}
 
 %build
 %py3_build
@@ -53,13 +53,13 @@ Python 3 version.
 sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
 
-%files -n python3-%{modname}
+%files -n python3-%{srcname}
 %license LICENSE
 %doc README README.md
-%{_bindir}/%{modname}
-%{python3_sitelib}/%{modname}*.egg-info/
-%{python3_sitelib}/%{modname}.py
-%{python3_sitelib}/__pycache__/%{modname}.*
+%{_bindir}/%{srcname}
+%{python3_sitelib}/%{srcname}*.egg-info/
+%{python3_sitelib}/%{srcname}.py
+%{python3_sitelib}/__pycache__/%{srcname}.*
 
 %changelog
 * Wed Nov 20 12:21:20 CET 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.5-2
