@@ -6,102 +6,64 @@ Release:        2%{?dist}
 Summary:        Pretty-print tabular data in Python, a library and a command-line utility
 
 License:        MIT
-URL:            https://pypi.python.org/pypi/%{modname}
-Source0:        https://files.pythonhosted.org/packages/source/t/%{modname}/%{modname}-%{version}.tar.gz
+URL:            https://pypi.python.org/pypi/tabulate
+Source:         %{pypi_source}
 
 BuildArch:      noarch
 
-%global _description \
-The main use cases of the library are:\
-* printing small tables without hassle: just one function call, formatting is\
-  guided by the data itself\
-* authoring tabular data for lightweight plain-text markup: multiple output\
-  formats suitable for further editing or transformation\
-* readable presentation of mixed textual and numeric data: smart column\
-  alignment, configurable number formatting, alignment by a decimal point
+%global _description %{expand:
+The main use cases of the library are:
 
-%description
-%_description
+* printing small tables without hassle: just one function call, formatting is
+  guided by the data itself
+* authoring tabular data for lightweight plain-text markup: multiple output
+  formats suitable for further editing or transformation
+* readable presentation of mixed textual and numeric data: smart column
+  alignment, configurable number formatting, alignment by a decimal point}
 
+%description %{_description}
 
-%package -n python%{python3_pkgversion}-%{modname}
+%package -n python3-%{modname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{modname}}
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
+%{?python_provide:%python_provide python3-%{modname}}
+BuildRequires:  python3-devel
+BuildRequires:  python3dist(setuptools)
 # Test deps
-BuildRequires:  python%{python3_pkgversion}-nose
-BuildRequires:  python%{python3_pkgversion}-numpy
-BuildRequires:  python%{python3_pkgversion}-wcwidth
-%if !0%{?rhel}
-# FIXME epel: missing dependencies
-BuildRequires:  python%{python3_pkgversion}-pandas
+BuildRequires:  python3dist(nose)
+BuildRequires:  python3dist(numpy)
+BuildRequires:  python3dist(pandas)
+BuildRequires:  python3dist(wcwidth)
 # widechars support
-Recommends:     python%{python3_pkgversion}-wcwidth
-%endif
+Recommends:     python%{python3_version}dist(wcwidth)
 
-%description -n python%{python3_pkgversion}-%{modname}
-%_description
-This package builds for Python %{python3_version} version.
+%description -n python3-%{modname} %{_description}
 
-%if 0%{?python3_other_pkgversion}
-%package -n python%{python3_other_pkgversion}-%{modname}
-Summary:        %{summary}
-%{?python_provide:%python_provide python%{python3_other_pkgversion}-%{modname}}
-BuildRequires:  python%{python3_other_pkgversion}-devel
-BuildRequires:  python%{python3_other_pkgversion}-setuptools
-
-%description -n python%{python3_other_pkgversion}-%{modname}
-%_description
-This package builds for Python %{python3_other_pkgversion} version.
-%endif
-
+Python 3 version.
 
 %prep
 %autosetup -n %{modname}-%{version}
 
 %build
-# mind the build chain of the unversioned executables
-%{?python3_other_pkgversion: %py3_other_build}
 %py3_build
 
 %install
-%{?python3_other_pkgversion: %py3_other_install}
-# make sure the executables are owned by py3
-rm -fv %{buildroot}%{_bindir}/*
 %py3_install
-
 
 %check
 sed -i 's/"python"/"python3"/g' test/test_cli.py
 %{__python3} setup.py test
-# FIXME python3_other_pkgversion: add missing dependencies to successfully run tests
 
-
-%if 0%{?python3_other_pkgversion}
-%files -n python%{python3_other_pkgversion}-%{modname}
+%files -n python3-%{modname}
 %license LICENSE
-%doc README*
-%{python3_other_sitelib}/%{modname}*.egg-info/
-%{python3_other_sitelib}/%{modname}.py
-%{python3_other_sitelib}/__pycache__/%{modname}.*
-# exclude unversioned binary to not confuse dependency check
-%exclude %{_bindir}/%{modname}
-%endif
-
-%files -n python%{python3_pkgversion}-%{modname}
-%license LICENSE
-%doc README*
+%doc README README.md
 %{_bindir}/%{modname}
 %{python3_sitelib}/%{modname}*.egg-info/
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
-%{_bindir}/%{modname}
-
 
 %changelog
-* Tue Nov 19 2019 Raphael Groner <projects.rg@smart.ms> - 0.8.5-2
-- bump release, simplify to merge from epel and drop python2 again
+* Wed Nov 20 12:21:20 CET 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.5-2
+- Remove all useless changes in spec
 
 * Fri Oct 25 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.5-1
 - Update to 0.8.5
