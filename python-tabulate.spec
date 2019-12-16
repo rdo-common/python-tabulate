@@ -1,3 +1,14 @@
+# Macros for py2/py3 compatibility
+%if 0%{?fedora} || 0%{?rhel} > 7
+%global pyver %{python3_pkgversion}
+%else
+%global pyver 2
+%endif
+%global pyver_bin python%{pyver}
+%global pyver_sitelib %python%{pyver}_sitelib
+%global pyver_install %py%{pyver}_install
+%global pyver_build %py%{pyver}_build
+# End of macros for py2/py3 compatibility
 %global srcname tabulate
 
 Name:           python-%{srcname}
@@ -23,46 +34,48 @@ The main use cases of the library are:
 
 %description %{_description}
 
-%package -n python3-%{srcname}
+%package -n python%{pyver}-%{srcname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{srcname}}
-BuildRequires:  python3-devel
-BuildRequires:  python3dist(setuptools)
+%{?python_provide:%python_provide python%{pyver}-%{srcname}}
+BuildRequires:  python%{pyver}-devel
+BuildRequires:  python%{pyver}-setuptools
 # Test deps
-BuildRequires:  python3dist(nose)
-BuildRequires:  python3dist(numpy)
-BuildRequires:  python3dist(pandas)
-BuildRequires:  python3dist(wcwidth)
+BuildRequires:  python%{pyver}-nose
+BuildRequires:  python%{pyver}-numpy
+BuildRequires:  python%{pyver}-pandas
+BuildRequires:  python%{pyver}-wcwidth
+%if %{pyver} == 3
 # widechars support
 Recommends:     python%{python3_version}dist(wcwidth)
+%endif
 
-%description -n python3-%{srcname} %{_description}
-
-Python 3 version.
+%description -n python%{pyver}-%{srcname} %{_description}
 
 %prep
 %autosetup -n %{srcname}-%{version}
 
 %build
-%py3_build
+%{pyver_build}
 
 %install
-%py3_install
+%{pyver_install}
 
 %check
-sed -i 's/"python"/"python3"/g' test/test_cli.py
-%{__python3} setup.py test
+sed -i 's/"python"/"%{pyver_bin}"/g' test/test_cli.py
+%{pyver_bin} setup.py test
 
-%files -n python3-%{srcname}
+%files -n python%{pyver}-%{srcname}
 %license LICENSE
 %doc README README.md
 %{_bindir}/%{srcname}
-%{python3_sitelib}/%{srcname}*.egg-info/
-%{python3_sitelib}/%{srcname}.py
+%{pyver_sitelib}/%{srcname}*.egg-info/
+%{pyver_sitelib}/%{srcname}.py*
+%if %{pyver} == 3
 %{python3_sitelib}/__pycache__/%{srcname}.*
+%endif
 
 %changelog
-* Wed Nov 20 12:21:20 CET 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.5-2
+* Wed Nov 20 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.8.5-2
 - Remove all useless changes in spec
 
 * Fri Oct 25 2019 Ankur Sinha <ankursinha AT fedoraproject DOT org> - 0.8.5-1
